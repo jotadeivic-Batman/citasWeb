@@ -225,4 +225,53 @@ export const api = {
   ) => request<AvailabilityBlock>(`/api/professionals/${professionalId}/blocks`, 'POST', data, token),
   deleteBlock: (professionalId: number, blockId: number, token: string) =>
     request<void>(`/api/professionals/${professionalId}/blocks/${blockId}`, 'DELETE', undefined, token),
+
+  // S4: Reprogramación de Citas
+  requestReschedule: (
+    appointmentId: number,
+    data: { locationId: number; newStartAt: string },
+    token: string
+  ) => request<any>(`/api/appointments/${appointmentId}/reschedule`, 'POST', data, token),
+  myReschedules: (token: string) => request<any[]>('/api/appointments/my-reschedules', 'GET', undefined, token),
+  adminPendingReschedules: (token: string) => request<any[]>('/api/admin/reschedules', 'GET', undefined, token),
+  approveReschedule: (id: number, token: string) =>
+    request<any>(`/api/admin/reschedules/${id}/approve`, 'PATCH', {}, token),
+  rejectReschedule: (id: number, reason: string, token: string) =>
+    request<any>(`/api/admin/reschedules/${id}/reject`, 'PATCH', { reason }, token),
+
+  // S4: Recuperación de Contraseña
+  forgotPassword: (email: string) =>
+    request<{ message: string; resetToken?: string; expiresAt?: string }>('/api/auth/forgot-password', 'POST', { email }),
+  resetPassword: (token: string, newPassword: string) =>
+    request<{ message: string }>('/api/auth/reset-password', 'POST', { token, newPassword }),
+
+  // S4: Aseguramiento / EPS
+  regimes: () => request<{ id: number; code: string; name: string }[]>('/api/catalogs/regimes'),
+  eps: () => request<{ id: number; code: string; name: string; active: boolean }[]>('/api/catalogs/eps'),
+  epsPlans: (epsId: number) =>
+    request<{ id: number; epsId: number; regimeId: number; code: string; name: string; active: boolean }[]>(
+      `/api/catalogs/eps/${epsId}/plans`
+    ),
+  myAffiliation: (token: string) =>
+    request<{ id: number; userId: number; planId: number; membershipNumber: string; isCurrent: boolean }>(
+      '/api/users/me/affiliation',
+      'GET',
+      undefined,
+      token
+    ),
+  affiliate: (data: { planId: number; membershipNumber: string }, token: string) =>
+    request<any>('/api/users/me/affiliation', 'POST', data, token),
+  adminEps: (token: string) =>
+    request<{ id: number; code: string; name: string; active: boolean }[]>('/api/admin/eps', 'GET', undefined, token),
+  saveEps: (data: { id?: number; code: string; name: string; active?: boolean }, token: string) =>
+    request<any>('/api/admin/eps', 'POST', data, token),
+  adminPlans: (epsId?: number, token?: string) => {
+    const qs = epsId ? `?epsId=${epsId}` : '';
+    return request<any[]>(`/api/admin/eps/plans${qs}`, 'GET', undefined, token);
+  },
+  savePlan: (
+    data: { id?: number; epsId: number; regimeId: number; code: string; name: string; active?: boolean },
+    token: string
+  ) => request<any>('/api/admin/eps/plans', 'POST', data, token),
 };
+

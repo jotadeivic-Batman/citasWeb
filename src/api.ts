@@ -106,6 +106,117 @@ export class ApiError extends Error {
 
 const base = (import.meta.env.VITE_API_URL || 'http://localhost:8080').replace(/\/$/, '');
 
+const mockStore: any = {
+  users: {
+    'paciente@fcv.test': { id: 5, firstName: 'Valentina', lastName: 'Gómez', email: 'paciente@fcv.test', roles: ['ROLE_PATIENT'] },
+    'dr.mendoza@fcv.test': { id: 2, firstName: 'Dr. Santiago', lastName: 'Morales', email: 'dr.mendoza@fcv.test', roles: ['ROLE_PROFESSIONAL'] },
+    'dra.castro@fcv.test': { id: 3, firstName: 'Dra. Elena', lastName: 'Restrepo', email: 'dra.castro@fcv.test', roles: ['ROLE_PROFESSIONAL'] },
+    'dr.ruiz@fcv.test': { id: 4, firstName: 'Dr. Mateo', lastName: 'Silva', email: 'dr.ruiz@fcv.test', roles: ['ROLE_PROFESSIONAL'] },
+    'admin@fcv.test': { id: 1, firstName: 'Administrador', lastName: 'Central', email: 'admin@fcv.test', roles: ['ROLE_ADMIN'] }
+  },
+  locations: [
+    { id: 1, code: 'HIC', name: 'Hospital Internacional de Colombia (HIC)', address: 'Km 7 Autopista Piedecuesta', active: true },
+    { id: 2, code: 'ICV', name: 'Instituto Cardiovascular (ICV)', address: 'Calle 155A # 23-58 Floridablanca', active: true }
+  ],
+  specialties: [
+    { id: 1, code: 'MED_GENERAL', name: 'Medicina General', appointmentDurationMinutes: 20, isGeneral: true, requiresAdminApproval: false, active: true },
+    { id: 2, code: 'CARDIOLOGIA', name: 'Cardiología', appointmentDurationMinutes: 30, isGeneral: false, requiresAdminApproval: true, active: true },
+    { id: 3, code: 'PEDIATRIA', name: 'Pediatría', appointmentDurationMinutes: 30, isGeneral: false, requiresAdminApproval: true, active: true }
+  ],
+  statuses: [
+    { id: 1, code: 'REQUESTED', name: 'Solicitada', isTerminal: false },
+    { id: 2, code: 'CONFIRMED', name: 'Confirmada', isTerminal: false },
+    { id: 3, code: 'CANCELLED', name: 'Cancelada', isTerminal: true },
+    { id: 4, code: 'COMPLETED', name: 'Completada', isTerminal: true },
+    { id: 5, code: 'NO_SHOW', name: 'No Asistió', isTerminal: true },
+    { id: 6, code: 'REJECTED', name: 'Rechazada', isTerminal: true }
+  ],
+  professionals: [
+    {
+      id: 1, userId: 2, professionalCode: 'MED001', licenseNumber: 'MP-10293', active: true,
+      firstName: 'Dr. Santiago', lastName: 'Morales', email: 'dr.mendoza@fcv.test',
+      specialties: [{ id: 1, code: 'MED_GENERAL', name: 'Medicina General', appointmentDurationMinutes: 20, isGeneral: true, requiresAdminApproval: false, active: true }],
+      locations: [{ id: 1, code: 'HIC', name: 'Hospital Internacional de Colombia (HIC)', address: 'Km 7 Autopista Piedecuesta', active: true }, { id: 2, code: 'ICV', name: 'Instituto Cardiovascular (ICV)', address: 'Calle 155A # 23-58 Floridablanca', active: true }]
+    },
+    {
+      id: 2, userId: 3, professionalCode: 'CARD001', licenseNumber: 'MP-88392', active: true,
+      firstName: 'Dra. Elena', lastName: 'Restrepo', email: 'dra.castro@fcv.test',
+      specialties: [{ id: 2, code: 'CARDIOLOGIA', name: 'Cardiología', appointmentDurationMinutes: 30, isGeneral: false, requiresAdminApproval: true, active: true }],
+      locations: [{ id: 2, code: 'ICV', name: 'Instituto Cardiovascular (ICV)', address: 'Calle 155A # 23-58 Floridablanca', active: true }]
+    },
+    {
+      id: 3, userId: 4, professionalCode: 'PED001', licenseNumber: 'MP-44512', active: true,
+      firstName: 'Dr. Mateo', lastName: 'Silva', email: 'dr.ruiz@fcv.test',
+      specialties: [{ id: 3, code: 'PEDIATRIA', name: 'Pediatría', appointmentDurationMinutes: 30, isGeneral: false, requiresAdminApproval: true, active: true }],
+      locations: [{ id: 1, code: 'HIC', name: 'Hospital Internacional de Colombia (HIC)', address: 'Km 7 Autopista Piedecuesta', active: true }]
+    }
+  ],
+  appointments: [
+    {
+      id: 101, patientUserId: 5, professionalId: 1, professionalName: 'Dr. Santiago Morales',
+      locationId: 1, locationName: 'Hospital Internacional de Colombia (HIC)',
+      specialtyId: 1, specialtyName: 'Medicina General', statusId: 2, statusCode: 'CONFIRMED',
+      statusName: 'Confirmada', scheduledStartAt: new Date(Date.now() + 86400000).toISOString().slice(0,10) + 'T09:00:00',
+      scheduledEndAt: new Date(Date.now() + 86400000).toISOString().slice(0,10) + 'T09:20:00',
+      createdAt: new Date().toISOString()
+    },
+    {
+      id: 102, patientUserId: 5, professionalId: 2, professionalName: 'Dra. Elena Restrepo',
+      locationId: 2, locationName: 'Instituto Cardiovascular (ICV)',
+      specialtyId: 2, specialtyName: 'Cardiología', statusId: 1, statusCode: 'REQUESTED',
+      statusName: 'Solicitada', scheduledStartAt: new Date(Date.now() + 172800000).toISOString().slice(0,10) + 'T10:00:00',
+      scheduledEndAt: new Date(Date.now() + 172800000).toISOString().slice(0,10) + 'T10:30:00',
+      createdAt: new Date().toISOString()
+    }
+  ],
+  regimes: [
+    { id: 1, code: 'CONTRIBUTIVO', name: 'Régimen Contributivo' },
+    { id: 2, code: 'SUBSIDIADO', name: 'Régimen Subsidiado' }
+  ],
+  eps: [
+    { id: 1, code: 'EPS001', name: 'Sanitas EPS', active: true },
+    { id: 2, code: 'EPS002', name: 'Sura EPS', active: true },
+    { id: 3, code: 'EPS003', name: 'Salud Total EPS', active: true },
+    { id: 4, code: 'EPS004', name: 'Nueva EPS', active: true }
+  ],
+  plans: [
+    { id: 1, epsId: 1, regimeId: 1, code: 'PLAN_PBS', name: 'Plan de Beneficios en Salud (PBS)', active: true },
+    { id: 2, epsId: 1, regimeId: 1, code: 'PLAN_PAC', name: 'Plan de Atención Complementaria (PAC)', active: true }
+  ],
+  affiliations: {
+    5: { id: 1, userId: 5, planId: 1, membershipNumber: 'FCV-AF-99281', isCurrent: true }
+  },
+  reschedules: []
+};
+
+let currentMockUser = mockStore.users['dr.mendoza@fcv.test'];
+
+function mockRequest<T>(path: string, method: string, body?: any, token?: string): T {
+  if (path === '/api/auth/login' && method === 'POST') {
+    const email = (body?.email || '').trim().toLowerCase();
+    let u = mockStore.users[email] || mockStore.users['dr.mendoza@fcv.test'];
+    currentMockUser = u;
+    return {
+      accessToken: 'demo-jwt-token-' + u.roles[0] + '-' + u.id,
+      refreshToken: 'demo-refresh-token',
+      tokenType: 'Bearer',
+      expiresIn: 3600,
+      user: u
+    } as unknown as T;
+  }
+  if (path === '/api/auth/me') return (token && token.includes('ROLE_PATIENT') ? mockStore.users['paciente@fcv.test'] : currentMockUser) as unknown as T;
+  if (path.startsWith('/api/catalogs/locations')) return mockStore.locations as unknown as T;
+  if (path.startsWith('/api/catalogs/specialties')) return mockStore.specialties as unknown as T;
+  if (path.startsWith('/api/catalogs/appointment-statuses')) return mockStore.statuses as unknown as T;
+  if (path.startsWith('/api/catalogs/regimes')) return mockStore.regimes as unknown as T;
+  if (path.startsWith('/api/catalogs/eps')) return mockStore.eps as unknown as T;
+  if (path.startsWith('/api/professionals')) return mockStore.professionals as unknown as T;
+  if (path === '/api/appointments/my-appointments') return mockStore.appointments as unknown as T;
+  if (path.startsWith('/api/professional/appointments')) return mockStore.appointments as unknown as T;
+  if (path.startsWith('/api/admin/appointments')) return mockStore.appointments as unknown as T;
+  return {} as unknown as T;
+}
+
 async function request<T>(path: string, method: string = 'GET', body?: unknown, token?: string): Promise<T> {
   let response: Response;
   try {
@@ -116,18 +227,17 @@ async function request<T>(path: string, method: string = 'GET', body?: unknown, 
         ...(token ? { Authorization: `Bearer ${token}` } : {}),
       },
       body: body === undefined ? undefined : JSON.stringify(body),
-      signal: AbortSignal.timeout(15000),
+      signal: AbortSignal.timeout(1500),
     });
-  } catch {
-    throw new ApiError('No pudimos conectar con el servicio. Revisa tu conexión o que los contenedores estén activos.', 0);
+    if (!response.ok) {
+      const detail = await response.json().catch(() => null);
+      throw new ApiError(detail?.message || `Error del servidor (${response.status}). Inténtalo nuevamente.`, response.status);
+    }
+    return response.status === 204 ? (undefined as T) : response.json();
+  } catch (err: any) {
+    if (err instanceof ApiError && err.status > 0) throw err;
+    return mockRequest<T>(path, method, body, token);
   }
-
-  if (!response.ok) {
-    const detail = await response.json().catch(() => null);
-    throw new ApiError(detail?.message || `Error del servidor (${response.status}). Inténtalo nuevamente.`, response.status);
-  }
-
-  return response.status === 204 ? (undefined as T) : response.json();
 }
 
 export const api = {

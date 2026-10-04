@@ -510,113 +510,152 @@ function App() {
       {notice && <div className="message success" role="status">{notice}</div>}
 
       {!session ? (
-        /* PANTALLA DE ACCESO (LOGIN & REGISTRO) */
+        /* PANTALLA DE ACCESO (OFICINA VIRTUAL FCV) */
         <main className="auth-main">
           <aside className="welcome-panel">
-            <div className="eyebrow"><span /> AGENDAMIENTO INTELIGENTE FCV</div>
-            <h1>Tu salud, <br />coordinada en <em>un solo lugar.</em></h1>
-            <p className="intro">
-              Sistema de citas médicas con validación de disponibilidad en tiempo real,
-              aprobación inmediata para medicina general y gestión administrativa para especialidades.
-            </p>
-            <div className="illustration" aria-hidden="true">
-              <div className="orbit orbit-one" />
-              <div className="orbit orbit-two" />
-              <div className="appointment-card">
-                <div className="mini-label">DISPONIBILIDAD ACTIVA</div>
-                <div className="card-title">Turnos en vivo <span>↗</span></div>
-                <div className="calendar-row"><span>L</span><span>M</span><span>M</span><span>J</span><span>V</span></div>
-                <div className="calendar-row dates"><span>1</span><span>2</span><span>3</span><span className="selected">4</span><span>5</span></div>
-                <div className="card-foot"><span className="circle-check">✓</span> Sedes HIC & ICV</div>
+            <div className="eyebrow"><span /> PORTAL OFICINA VIRTUAL FCV</div>
+            <div>
+              <h1>Tu salud, <br />coordinada en <em>un solo lugar.</em></h1>
+              <p className="intro">
+                Bienvenido a tu plataforma de atención integral. Consulta disponibilidad médica en tiempo real, agenda tus citas en Medicina General con aprobación automática y gestiona citas especializadas en nuestras sedes HIC e ICV.
+              </p>
+
+              <div className="hero-feature-pills">
+                <div className="feature-pill-item">
+                  <span className="pill-icon">⚡</span>
+                  <div>
+                    <strong>Agendamiento Inmediato</strong>
+                    <div style={{ fontSize: '11px', opacity: 0.85 }}>Citas de Medicina General confirmadas al instante</div>
+                  </div>
+                </div>
+                <div className="feature-pill-item">
+                  <span className="pill-icon">🩺</span>
+                  <div>
+                    <strong>Especialistas Certificados</strong>
+                    <div style={{ fontSize: '11px', opacity: 0.85 }}>Cardiología, Pediatría y más en HIC e ICV</div>
+                  </div>
+                </div>
+                <div className="feature-pill-item">
+                  <span className="pill-icon">🔒</span>
+                  <div>
+                    <strong>Atención 24 Horas</strong>
+                    <div style={{ fontSize: '11px', opacity: 0.85 }}>Sin filas, sin desplazamientos y 100% seguro</div>
+                  </div>
+                </div>
               </div>
-              <span className="floating-cross">✚</span>
             </div>
+
             <div className="locations">
-              <span>SEDES DISPONIBLES</span>
-              <p>HIC · Autopista Piedecuesta <i /> ICV · El Bosque Floridablanca</p>
+              <span>SEDES DE ATENCIÓN HABILITADAS</span>
+              <p>📍 HIC (Km 7 Autopista Piedecuesta) <i /> 📍 ICV (El Bosque Floridablanca)</p>
             </div>
           </aside>
 
           <section className="access-panel">
             <div className="form-content">
-              <span className="section-label">PORTAL DE ACCESO</span>
-              <h2>{mode === 'login' ? 'Bienvenido a FCV Citas' : 'Crea tu cuenta de paciente'}</h2>
-              <p className="subtitle">
-                {mode === 'login' ? 'Ingresa con tu cuenta o selecciona un perfil de prueba rápido:' : 'Diligencia tus datos para registrarte en el sistema:'}
-              </p>
-
-              {/* Botones de autocompletar perfiles de prueba */}
-              {mode === 'login' && (
-                <div className="quick-auth-box">
-                  <div className="quick-auth-title">⚡ Cuentas de prueba rápida (1 clic):</div>
-                  <div className="quick-auth-grid">
-                    <button
-                      type="button"
-                      className="quick-btn"
-                      onClick={() => void quickLogin('paciente@fcv.test', 'User123*')}
-                      disabled={busy}
-                    >
-                      <strong>👤 Laura Martínez</strong>
-                      <span>Paciente (11 citas)</span>
-                    </button>
-                    <button
-                      type="button"
-                      className="quick-btn"
-                      onClick={() => void quickLogin('dr.mendoza@fcv.test', 'Doc123*')}
-                      disabled={busy}
-                    >
-                      <strong>🩺 Dr. C. Mendoza</strong>
-                      <span>Medicina General</span>
-                    </button>
-                    <button
-                      type="button"
-                      className="quick-btn"
-                      onClick={() => void quickLogin('dra.castro@fcv.test', 'Doc123*')}
-                      disabled={busy}
-                    >
-                      <strong>❤️ Dra. S. Castro</strong>
-                      <span>Cardiología (60m)</span>
-                    </button>
-                    <button
-                      type="button"
-                      className="quick-btn"
-                      onClick={() => void quickLogin('dr.ruiz@fcv.test', 'Doc123*')}
-                      disabled={busy}
-                    >
-                      <strong>👶 Dr. A. Ruiz</strong>
-                      <span>Pediatría</span>
-                    </button>
-                    <button
-                      type="button"
-                      className="quick-btn"
-                      onClick={() => void quickLogin('admin@fcv.test', 'Admin123*')}
-                      disabled={busy}
-                    >
-                      <strong>⚙️ Administrador</strong>
-                      <span>Bandeja Aprobación</span>
-                    </button>
+              {/* Cabecera estilo Oficina Virtual */}
+              <div className="virtual-office-header">
+                <div className="vo-brand">
+                  <div className="vo-logo-badge">✚</div>
+                  <div className="vo-brand-text">
+                    <strong>FCV Citas</strong>
+                    <span>FUNDACIÓN CARDIOVASCULAR</span>
                   </div>
                 </div>
-              )}
-
-              <div className="mode-switch">
-                <button
-                  type="button"
-                  aria-pressed={mode === 'login'}
-                  onClick={() => changeMode('login')}
-                  disabled={busy}
-                >
-                  Iniciar sesión
-                </button>
-                <button
-                  type="button"
-                  aria-pressed={mode === 'register'}
-                  onClick={() => changeMode('register')}
-                  disabled={busy}
-                >
-                  Registrarse
-                </button>
+                <div className="vo-office-badge">
+                  <span className="laptop-icon">💻</span>
+                  <div>
+                    <strong>Oficina Virtual</strong>
+                    <small>Acceso Seguro 24/7</small>
+                  </div>
+                </div>
               </div>
+
+              <p className="vo-welcome-desc">
+                {mode === 'login'
+                  ? <>Selecciona tu <strong>tipo de usuario</strong> o ingresa directamente tus credenciales para acceder a tus servicios de salud:</>
+                  : <>Diligencia tus datos personales para crear tu cuenta de <strong>Afiliado / Paciente</strong>:</>}
+              </p>
+
+              {/* Selector de Tipo de Usuario / Perfiles rápidos */}
+              {mode === 'login' && (
+                <>
+                  <div className="section-label-bar">
+                    <span>SELECCIONA EL TIPO DE USUARIO</span>
+                    <span className="active-hint">⚡ Acceso Rápido (1 Clic)</span>
+                  </div>
+                  <div className="user-type-tabs" role="tablist">
+                    <button
+                      type="button"
+                      className={`user-type-btn ${fields.email === 'paciente@fcv.test' ? 'active' : ''}`}
+                      onClick={() => void quickLogin('paciente@fcv.test', 'User123*')}
+                      disabled={busy}
+                      title="Paciente sintético: Valentina Gómez"
+                    >
+                      <span className="btn-icon">👤</span>
+                      <span>AFILIADOS</span>
+                    </button>
+                    <button
+                      type="button"
+                      className={`user-type-btn ${fields.email === 'dr.mendoza@fcv.test' ? 'active' : ''}`}
+                      onClick={() => void quickLogin('dr.mendoza@fcv.test', 'Doc123*')}
+                      disabled={busy}
+                      title="Médico General: Dr. Santiago Morales"
+                    >
+                      <span className="btn-icon">🩺</span>
+                      <span>MED. GENERAL</span>
+                    </button>
+                    <button
+                      type="button"
+                      className={`user-type-btn ${fields.email === 'dra.castro@fcv.test' ? 'active' : ''}`}
+                      onClick={() => void quickLogin('dra.castro@fcv.test', 'Doc123*')}
+                      disabled={busy}
+                      title="Cardióloga: Dra. Elena Restrepo"
+                    >
+                      <span className="btn-icon">❤️</span>
+                      <span>CARDIOLOGÍA</span>
+                    </button>
+                    <button
+                      type="button"
+                      className={`user-type-btn ${fields.email === 'dr.ruiz@fcv.test' ? 'active' : ''}`}
+                      onClick={() => void quickLogin('dr.ruiz@fcv.test', 'Doc123*')}
+                      disabled={busy}
+                      title="Pediatra: Dr. Mateo Silva"
+                    >
+                      <span className="btn-icon">👶</span>
+                      <span>PEDIATRÍA</span>
+                    </button>
+                    <button
+                      type="button"
+                      className={`user-type-btn ${fields.email === 'admin@fcv.test' ? 'active' : ''}`}
+                      onClick={() => void quickLogin('admin@fcv.test', 'Admin123*')}
+                      disabled={busy}
+                      title="Administrador Central FCV"
+                    >
+                      <span className="btn-icon">⚙️</span>
+                      <span>ADMIN</span>
+                    </button>
+                  </div>
+
+                  {/* Indicador de perfil activo */}
+                  <div className="active-profile-card">
+                    <div>
+                      <span className="profile-tag-name">
+                        {fields.email === 'paciente@fcv.test' && '👤 Valentina Gómez (Paciente)'}
+                        {fields.email === 'dr.mendoza@fcv.test' && '🩺 Dr. Santiago Morales (Medicina General)'}
+                        {fields.email === 'dra.castro@fcv.test' && '❤️ Dra. Elena Restrepo (Cardiología - 60m)'}
+                        {fields.email === 'dr.ruiz@fcv.test' && '👶 Dr. Mateo Silva (Pediatría)'}
+                        {fields.email === 'admin@fcv.test' && '⚙️ Administrador Central (Aprobación & Catálogos)'}
+                        {!['paciente@fcv.test', 'dr.mendoza@fcv.test', 'dra.castro@fcv.test', 'dr.ruiz@fcv.test', 'admin@fcv.test'].includes(fields.email) && '🔑 Usuario Personal'}
+                      </span>
+                      <span className="profile-tag-role">
+                        {fields.email ? fields.email : 'Ingresa tu correo o selecciona un perfil arriba'}
+                      </span>
+                    </div>
+                    <span className="profile-badge-pill">✓ Listo para entrar</span>
+                  </div>
+                </>
+              )}
 
               <form onSubmit={event => void submitAuth(event)} aria-busy={busy}>
                 <fieldset disabled={busy}>
@@ -625,92 +664,173 @@ function App() {
                       <div className="field-row">
                         <label>
                           Nombres
-                          <input
-                            required
-                            maxLength={100}
-                            value={fields.firstName}
-                            onChange={e => setFields(f => ({ ...f, firstName: e.target.value }))}
-                          />
+                          <div className="input-group-field">
+                            <span className="input-icon-badge">👤</span>
+                            <input
+                              required
+                              maxLength={100}
+                              placeholder="Ej: Valentina"
+                              value={fields.firstName}
+                              onChange={e => setFields(f => ({ ...f, firstName: e.target.value }))}
+                            />
+                          </div>
                         </label>
                         <label>
                           Apellidos
-                          <input
-                            required
-                            maxLength={100}
-                            value={fields.lastName}
-                            onChange={e => setFields(f => ({ ...f, lastName: e.target.value }))}
-                          />
+                          <div className="input-group-field">
+                            <span className="input-icon-badge">👤</span>
+                            <input
+                              required
+                              maxLength={100}
+                              placeholder="Ej: Gómez"
+                              value={fields.lastName}
+                              onChange={e => setFields(f => ({ ...f, lastName: e.target.value }))}
+                            />
+                          </div>
                         </label>
                       </div>
                       <div className="field-row document-row">
                         <label>
                           Tipo Doc.
-                          <select
-                            value={fields.documentType}
-                            onChange={e => setFields(f => ({ ...f, documentType: e.target.value }))}
-                          >
-                            <option value="CC">CC</option>
-                            <option value="CE">CE</option>
-                            <option value="TI">TI</option>
-                            <option value="PA">Pasaporte</option>
-                          </select>
+                          <div className="input-group-field">
+                            <span className="input-icon-badge">🪪</span>
+                            <select
+                              value={fields.documentType}
+                              onChange={e => setFields(f => ({ ...f, documentType: e.target.value }))}
+                            >
+                              <option value="CC">CC - Cédula de Ciudadanía</option>
+                              <option value="CE">CE - Cédula de Extranjería</option>
+                              <option value="TI">TI - Tarjeta de Identidad</option>
+                              <option value="PA">PA - Pasaporte</option>
+                            </select>
+                          </div>
                         </label>
                         <label>
                           Número de documento
-                          <input
-                            required
-                            value={fields.documentNumber}
-                            onChange={e => setFields(f => ({ ...f, documentNumber: e.target.value }))}
-                          />
+                          <div className="input-group-field">
+                            <span className="input-icon-badge">🔢</span>
+                            <input
+                              required
+                              placeholder="1000000005"
+                              value={fields.documentNumber}
+                              onChange={e => setFields(f => ({ ...f, documentNumber: e.target.value }))}
+                            />
+                          </div>
                         </label>
                       </div>
                       <label>
-                        Teléfono
-                        <input
-                          type="tel"
-                          required
-                          value={fields.phone}
-                          onChange={e => setFields(f => ({ ...f, phone: e.target.value }))}
-                        />
+                        Teléfono Móvil
+                        <div className="input-group-field">
+                          <span className="input-icon-badge">📱</span>
+                          <input
+                            type="tel"
+                            required
+                            placeholder="+57 300 000 0000"
+                            value={fields.phone}
+                            onChange={e => setFields(f => ({ ...f, phone: e.target.value }))}
+                          />
+                        </div>
                       </label>
                     </>
                   )}
 
+                  {mode === 'login' && (
+                    <div className="field-row document-row">
+                      <label style={{ width: '100%' }}>
+                        Tipo de Documento
+                        <div className="input-group-field">
+                          <span className="input-icon-badge">🪪</span>
+                          <select
+                            value={fields.documentType}
+                            onChange={e => setFields(f => ({ ...f, documentType: e.target.value }))}
+                          >
+                            <option value="CC">CC - CÉDULA DE CIUDADANÍA</option>
+                            <option value="CE">CE - CÉDULA DE EXTRANJERÍA</option>
+                            <option value="TI">TI - TARJETA DE IDENTIDAD</option>
+                            <option value="PA">PA - PASAPORTE</option>
+                          </select>
+                        </div>
+                      </label>
+                    </div>
+                  )}
+
                   <label>
-                    Correo electrónico
-                    <input
-                      type="email"
-                      required
-                      placeholder="usuario@fcv.test"
-                      value={fields.email}
-                      onChange={e => setFields(f => ({ ...f, email: e.target.value }))}
-                    />
+                    {mode === 'login' ? 'Número de Documento o Correo Electrónico' : 'Correo electrónico'}
+                    <div className="input-group-field">
+                      <span className="input-icon-badge">👤</span>
+                      <input
+                        type="email"
+                        required
+                        placeholder="usuario@fcv.test"
+                        value={fields.email}
+                        onChange={e => setFields(f => ({ ...f, email: e.target.value }))}
+                      />
+                    </div>
                   </label>
 
-                  <label htmlFor="auth-pass">Contraseña</label>
-                  <div className="password-field">
-                    <input
-                      id="auth-pass"
-                      type={visible ? 'text' : 'password'}
-                      required
-                      placeholder="••••••••"
-                      value={fields.password}
-                      onChange={e => setFields(f => ({ ...f, password: e.target.value }))}
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setVisible(v => !v)}
-                    >
-                      {visible ? 'Ocultar' : 'Mostrar'}
-                    </button>
+                  <label htmlFor="auth-pass">
+                    Contraseña
+                    <div className="input-group-field">
+                      <span className="input-icon-badge">🔒</span>
+                      <input
+                        id="auth-pass"
+                        type={visible ? 'text' : 'password'}
+                        required
+                        placeholder="••••••••"
+                        value={fields.password}
+                        onChange={e => setFields(f => ({ ...f, password: e.target.value }))}
+                      />
+                      <button
+                        type="button"
+                        className="pass-toggle-btn"
+                        onClick={() => setVisible(v => !v)}
+                        tabIndex={-1}
+                      >
+                        {visible ? '👁️ Ocultar' : '👁️ Ver'}
+                      </button>
+                    </div>
+                  </label>
+
+                  <div className="form-actions-row">
+                    <label className="remember-label">
+                      <input type="checkbox" defaultChecked />
+                      <span>Recordar mis datos</span>
+                    </label>
+                    {mode === 'login' && (
+                      <button
+                        type="button"
+                        style={{ background: 'none', border: 0, color: '#2e6f6c', fontSize: '12px', fontWeight: 600, cursor: 'pointer', padding: 0 }}
+                        onClick={() => alert('Para el laboratorio académico de pruebas, las contraseñas son: User123* para pacientes, Doc123* para médicos y Admin123* para administradores.')}
+                      >
+                        ¿Olvidó su contraseña?
+                      </button>
+                    )}
                   </div>
 
-                  <button className="primary-button" type="submit" disabled={busy}>
-                    {busy ? 'Procesando…' : mode === 'login' ? 'Entrar a mi portal' : 'Completar registro'}
-                    <span>↗</span>
+                  <button className="btn-ingresar-primary" type="submit" disabled={busy}>
+                    {busy ? 'Verificando credenciales…' : mode === 'login' ? 'INGRESAR AL PORTAL' : 'COMPLETAR REGISTRO'}
+                    <span>➔</span>
                   </button>
                 </fieldset>
               </form>
+
+              <div className="auth-footer-links">
+                {mode === 'login' ? (
+                  <span>
+                    ¿No tienes cuenta de paciente?{' '}
+                    <button type="button" onClick={() => changeMode('register')}>
+                      Regístrate aquí
+                    </button>
+                  </span>
+                ) : (
+                  <span>
+                    ¿Ya estás registrado?{' '}
+                    <button type="button" onClick={() => changeMode('login')}>
+                      Inicia sesión aquí
+                    </button>
+                  </span>
+                )}
+              </div>
             </div>
           </section>
         </main>
